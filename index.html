@@ -7,13 +7,172 @@
   <script src="app.js" charset="utf-8"></script>
 </head>
 <body>
-
-<h3 class="score">YOUR SCORE: <span id="result"></span></h3>
-
-<div class="container">
-  <div class="grid">
+  <h1 class="page-title">Memory-Game</h1>
+  <div class="overlay-text visible">
+    Click to Start
   </div>
-</div>
+  <div id="game-over-text" class="overlay-text">
+    GAME OVER
+    <span class="overlay-text-small">Click to Restart</span>
+  </div>
+  <div id="victory-text" class="overlay-text">
+    VICTORY
+    <span class="overlay-text-small">Click to Restart</span>
+  </div>
+
+  <div class="game-container">
+    <div class="game-info-container">
+      <div class="game-info">
+        <h3 class="time">Time <span id="time-remaining">100</span></h3>
+      </div>
+      <div class="game-info">
+        <h3 class="score">Score: <span id="result"></span></h3>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-back card-face">
+        <img class="back" src="images/front.png">
+      </div>
+      <div class="card-front card-face">
+        <img class="card-value" src="images/apple.png">
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-back card-face">
+        <img class="back" src="images/front.png">
+      </div>
+      <div class="card-front card-face">
+        <img class="card-value" src="images/apple.png">
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-back card-face">
+        <img class="back" src="images/front.png">
+      </div>
+      <div class="card-front card-face">
+        <img class="card-value" src="images/avocado.png">
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-back card-face">
+        <img class="back" src="images/front.png">
+      </div>
+      <div class="card-front card-face">
+        <img class="card-value" src="images/avocado.png">
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-back card-face">
+        <img class="back" src="images/front.png">
+      </div>
+      <div class="card-front card-face">
+        <img class="card-value" src="images/broccoli.png">
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-back card-face">
+        <img class="back" src="images/front.png">
+      </div>
+      <div class="card-front card-face">
+        <img class="card-value" src="images/broccoli.png">
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-back card-face">
+        <img class="back" src="images/front.png">
+      </div>
+      <div class="card-front card-face">
+        <img class="card-value" src="images/carrot.png">
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-back card-face">
+        <img class="back" src="images/front.png">
+      </div>
+      <div class="card-front card-face">
+        <img class="card-value" src="images/carrot.png">
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-back card-face">
+        <img class="back" src="images/front.png">
+      </div>
+      <div class="card-front card-face">
+        <img class="card-value" src="images/eggplant.png">
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-back card-face">
+        <img class="back" src="images/front.png">
+      </div>
+      <div class="card-front card-face">
+        <img class="card-value" src="images/eggplant.png">
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-back card-face">
+        <img class="back" src="images/front.png">
+      </div>
+      <div class="card-front card-face">
+        <img class="card-value" src="images/peas.png">
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-back card-face">
+        <img class="back" src="images/front.png">
+      </div>
+      <div class="card-front card-face">
+        <img class="card-value" src="images/peas.png">
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-back card-face">
+        <img class="back" src="images/front.png">
+      </div>
+      <div class="card-front card-face">
+        <img class="card-value" src="images/pineapple.png">
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-back card-face">
+        <img class="back" src="images/front.png">
+      </div>
+      <div class="card-front card-face">
+        <img class="card-value" src="images/pineapple.png">
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-back card-face">
+        <img class="back" src="images/front.png">
+      </div>
+      <div class="card-front card-face">
+        <img class="card-value" src="images/watermelon.png">
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-back card-face">
+        <img class="back" src="images/front.png">
+      </div>
+      <div class="card-front card-face">
+        <img class="card-value" src="images/watermelon.png">
+      </div>
+    </div>
+  </div>
 
 </body>
 </html>

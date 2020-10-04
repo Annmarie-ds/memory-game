@@ -1,133 +1,131 @@
-document.addEventListener('DOMContentLoaded', () => {
+class MemoryGame {
+  constructor(totalTime, cards) {
+    this.cardsArray = cards;
+    this.totalTime = totalTime;
+    this.timeRemaining = totalTime;
+    this.timer = document.getElementById('time-remaining');
+    this.score = document.getElementById('result');
+  }
 
-  const cardArray = [
-    {
-      name: 'apple',
-      img: 'images/apple.png'
-    },
-    {
-      name: 'avocado',
-      img: 'images/avocado.png'
-    },
-    {
-      name: 'broccoli',
-      img: 'images/broccoli.png'
-    },
-    {
-      name: 'eggplant',
-      img: 'images/eggplant.png'
-    },
-            {
-      name: 'watermelon',
-      img: 'images/watermelon.png'
-    },
-    {
-      name: 'peas',
-      img: 'images/peas.png'
-    },
-    {
-      name: 'pineapple',
-      img: 'images/pineapple.png'
-    },
-    {
-      name: 'strawberry',
-      img: 'images/carrot.png'
-    },
-    {
-      name: 'apple',
-      img: 'images/apple.png'
-    },
-    {
-      name: 'avocado',
-      img: 'images/avocado.png'
-    },
-    {
-      name: 'broccoli',
-      img: 'images/broccoli.png'
-    },
-    {
-      name: 'eggplant',
-      img: 'images/eggplant.png'
-    },
-    {
-      name: 'pineapple',
-      img: 'images/pineapple.png'
-    },
-    {
-      name: 'strawberry',
-      img: 'images/carrot.png'
-    },
-        {
-      name: 'watermelon',
-      img: 'images/watermelon.png'
-    },
-    {
-      name: 'peas',
-      img: 'images/peas.png'
-    }
-  ]
+  startGame() {
+    this.totalClicks = 0;
+    this.timeRemaining = this.totalTime;
+    this.cardToCheck = null;
+    this.matchedCards = [];
+    this.busy = true;
+    setTimeout(() => {
+      this.shuffleCards(this.cardsArray);
+      this.countDown = this.startCountDown();
+      this.busy = false;
+    }, 500);
+    this.hideCards();
+    this.timer.innerText = this.timeRemaining;
+    this.score.innerText = this.totalScore;
+  }
 
-  cardArray.sort(() => 0.5 - Math.random())
+  startCountDown() {
+    return setInterval(() => {
+      this.timeRemaining--;
+      this.timer.innerText = this.timeRemaining;
+      if(this.timeRemaining === 0)
+          this.gameOver();
+    }, 1000);
+  }
 
-  const grid = document.querySelector('.grid')
-  const resultDisplay = document.querySelector('#result')
-  var cardsChosen = []
-  var cardsChosenId = []
-  const cardsWon = []
+  gameOver() {
+    clearInterval(this.countDown);
+    document.getElementById('game-over-text').classList.add('visible');
+  }
 
-  //create your board
-  function createBoard() {
-    for (let i = 0; i < cardArray.length; i++) {
-      var card = document.createElement('img')
-      card.setAttribute('src', 'images/front.png')
-      card.setAttribute('data-id', i)
-      card.addEventListener('click', flipCard)
-      grid.appendChild(card)
+  victory() {
+    clearInterval(this.countdown);
+    document.getElementById('victory-text').classList.add('visible');
+  }
+
+  hideCards() {
+    this.cardsArray.forEach(card => {
+      card.classList.remove('visible');
+      card.classList.remove('matched');
+    });
+  }
+
+  flipCard(card) {
+    if (this.canFlipCard(card)) {
+      card.classList.add('visible');
+
+      if(this.cardToCheck) {
+        this.checkForCardMatch(card);
+      } else {
+        this.cardToCheck = card;
+      }
     }
   }
 
+  checkForCardMatch(card) {
+    if(this.getCardType(card) === this.getCardType(this.cardToCheck))
+      this.cardMatch(card, this.cardToCheck);
+    else
+      this.cardMismatch(card, this.cardToCheck);
+    this.cardToCheck = null;
+  }
 
-  //check for matches
-  function checkForMatch() {
-    const cards = document.querySelectorAll('img')
-    const optionOneId = cardsChosenId[0]
-    const optionTwoId = cardsChosenId[1]
+  cardMatch(card1, card2) {
+    this.matchedCards.push(card1);
+    this.matchedCards.push(card2);
+    card1.classList.add('matched');
+    card2.classList.add('matched');
+    if(this.matchedCards.length === this.cardsArray.length)
+      this.victory();
+  }
+  cardMismatch(card1, card2) {
+    this.busy = true;
+    setTimeout(() => {
+      card1.classList.remove('visible');
+      card2.classList.remove('visible');
+      this.busy = false;
+    }, 1000);
+  }
 
-    if(optionOneId == optionTwoId) {
-      cards[optionOneId].setAttribute('src', 'images/done.png')
-      cards[optionTwoId].setAttribute('src', 'images/done.png')
-      alert('You have clicked the same image!')
-    }
-    else if (cardsChosen[0] === cardsChosen[1]) {
-      alert('You found a match')
-      cards[optionOneId].setAttribute('src', 'images/done.png')
-      cards[optionTwoId].setAttribute('src', 'images/done.png')
-      cards[optionOneId].removeEventListener('click', flipCard)
-      cards[optionTwoId].removeEventListener('click', flipCard)
-      cardsWon.push(cardsChosen)
-    } else {
-      cards[optionOneId].setAttribute('src', 'images/front.png')
-      cards[optionTwoId].setAttribute('src', 'images/front.png')
-      alert('Sorry, try again')
-    }
-    cardsChosen = []
-    cardsChosenId = []
-    resultDisplay.textContent = cardsWon.length
-    if  (cardsWon.length === cardArray.length/2) {
-      resultDisplay.textContent = 'Congratulations! You found them all!'
+  // fisher-yates shuffle algorithm
+  shuffleCards(cardsArray) {
+    for (let i = cardsArray.length - 1; i > 0; i--) {
+      let randIndex = Math.floor(Math.random() * (i + 1));
+      cardsArray[randIndex].style.order = i;
+      cardsArray[i].style.order = randIndex;
     }
   }
 
-  //flip your card
-  function flipCard() {
-    const cardId = this.getAttribute('data-id')
-    cardsChosen.push(cardArray[cardId].name)
-    cardsChosenId.push(cardId)
-    this.setAttribute('src', cardArray[cardId].img)
-    if (cardsChosen.length ===2) {
-      setTimeout(checkForMatch, 500)
-    }
+  getCardType(card) {
+    return card.getElementsByClassName('card-value')[0].src;
   }
 
-  createBoard()
-});
+  canFlipCard(card) {
+    return !this.busy && !this.matchedCards.includes(card) && card !== this.cardToCheck;
+  }
+}
+if(document.readyState == 'loading') {
+  document.addEventListener('DOMContentLoaded', ready);
+} else {
+  ready();
+}
+
+function ready() {
+  let overlays = Array.from(document.getElementsByClassName('overlay-text'));
+  let cards = Array.from(document.getElementsByClassName('card'));
+  let game = new MemoryGame(100, cards);
+
+  overlays.forEach(overlay => {
+    overlay.addEventListener('click', () => {
+      overlay.classList.remove('visible');
+      game.startGame();
+    });
+  });
+
+  cards.forEach(card => {
+    card.addEventListener('click', () => {
+      game.flipCard(card);
+    })
+  })
+}
+
+
