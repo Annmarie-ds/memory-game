@@ -4,11 +4,10 @@ class MemoryGame {
     this.totalTime = totalTime;
     this.timeRemaining = totalTime;
     this.timer = document.getElementById('time-remaining');
-    this.score = document.getElementById('result');
+    this.score = document.querySelector('#result');
   }
 
   startGame() {
-    this.totalClicks = 0;
     this.timeRemaining = this.totalTime;
     this.cardToCheck = null;
     this.matchedCards = [];
@@ -20,7 +19,7 @@ class MemoryGame {
     }, 500);
     this.hideCards();
     this.timer.innerText = this.timeRemaining;
-    this.score.innerText = this.totalScore;
+    this.score.innerText = this.matchedCards.length;
   }
 
   startCountDown() {
@@ -41,6 +40,7 @@ class MemoryGame {
     clearInterval(this.countdown);
     document.getElementById('victory-text').classList.add('visible');
   }
+
 
   hideCards() {
     this.cardsArray.forEach(card => {
@@ -74,6 +74,7 @@ class MemoryGame {
     this.matchedCards.push(card2);
     card1.classList.add('matched');
     card2.classList.add('matched');
+    this.score.innerText = this.matchedCards.length;
     if(this.matchedCards.length === this.cardsArray.length)
       this.victory();
   }
